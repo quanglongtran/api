@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,13 +15,19 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::any('clear', function() {
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+});
+
+Route::any('bcrypt', function() {
+    return bcrypt('123456');
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('test', function(Request $request) {
-    $query = explode('?', $_SERVER['REQUEST_URI'])[1];
-    parse_str($query, $query);
-    return $query;
-    return parse_url('http://test.com/api/callback?code=4%2F0AdQt8qgUKXk3LEGtAOPwJ22xv6gpwSnI3381p7DlBCaHGSzxrPOHdkWFZrn3epvkkZ5q1A&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent');
+    $token = Auth::attempt(['email' => 'tql0928159331@gmail.com', 'password' => 123456]);
+    return $token;
 });

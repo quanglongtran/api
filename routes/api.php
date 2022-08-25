@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SocialController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,5 +33,7 @@ Route::group([
     Route::post('/change-pass', [AuthController::class, 'changePassWord']);    
 });
 
-Route::post('/get-google-sign-in-url', [\App\Http\Controllers\Api\GoogleController::class, 'getGoogleSignInUrl']);
-Route::get('/callback', [\App\Http\Controllers\Api\GoogleController::class, 'loginCallback']);
+Route::prefix('social')->name('social.')->group(function() {
+    Route::post('sign-in/{provider}', [SocialController::class, 'signIn'])->name('index');
+    Route::get('sign-in/{provider}/callback', [SocialController::class, 'callback'])->name('callback');
+});

@@ -115,4 +115,11 @@ return [
         ],
     ],
 
+    'test' => [
+        'theme' => 'default',
+
+        'paths' => [
+            resource_path('views/vendor/mail'),
+        ]
+    ]
 ];

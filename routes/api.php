@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +31,8 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
-    Route::post('/change-pass', [AuthController::class, 'changePassWord']);    
+    Route::post('/change-pass', [AuthController::class, 'changePassWord']);  
+    Route::post('send-email', [MailController::class, 'sendEmail']);  
 });
 
 Route::prefix('social')->name('social.')->group(function() {

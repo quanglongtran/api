@@ -28,6 +28,7 @@ Route::get('/', function () {
 });
 
 Route::get('test', function(Request $request) {
-    $token = Auth::attempt(['email' => 'tql0928159331@gmail.com', 'password' => 123456]);
-    return $token;
+    // return mail_path('images\bee.png');
+    return view('mail.red-lock');
+    return '<img src="'. mail_path('images\bee.png') .'">';
 });

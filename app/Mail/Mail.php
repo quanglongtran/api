@@ -11,14 +11,16 @@ class Mail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $data;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -28,6 +30,11 @@ class Mail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mail.mail');
+        return $this
+        ->subject($this->data['title'])
+        ->from(\env('MAIL_USERNAME'), 'no reply')
+        ->view('mail.red-lock')
+        // ->render()
+        ;
     }
 }

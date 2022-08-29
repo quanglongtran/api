@@ -21,6 +21,7 @@ class Mail extends Mailable
     public function __construct($data)
     {
         $this->data = $data;
+        $this->queue = 'mail';
     }
 
     /**
@@ -33,7 +34,7 @@ class Mail extends Mailable
         return $this
         ->subject($this->data['title'])
         ->from(\env('MAIL_USERNAME'), 'no reply')
-        ->view('mail.red-lock')
+        ->view("mail.{$this->data['template']}", $this->data['data'])
         // ->render()
         ;
     }

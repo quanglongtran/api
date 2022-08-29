@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -204,6 +204,11 @@ return [
          * JSON Web Token
          */
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+
+        /**
+         * Providers
+         */
+        App\Providers\RepositoryServiceProvider::class,
     ],
 
     /*

@@ -8,10 +8,19 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
-
+use App\Repositories\Mail\MailRepositoryInterface;
+use Illuminate\Support\Facades\URL;
+use App\Mail\Mail as SendMail;
+use Illuminate\Support\Facades\Mail;
 
 class AuthRepository implements AuthRepositoryInterface
 {
+    public MailRepositoryInterface $Mail;
+
+    public function __construct(MailRePositoryInterface $mail)
+    {
+        $this->Mail = $mail;
+    }
     /**
      * Get a JWT via given credentials.
      *
@@ -63,11 +72,19 @@ class AuthRepository implements AuthRepositoryInterface
             ['password' => bcrypt($data['password'])]
         ));
 
-        return response()->json([
-            'success' => true,
-            'message' => 'User successfully registered',
-            'user' => $user
-        ], 201);
+        $token = Auth::attempt(['email' => $data['email'], 'password' => $data['password']]);
+        $url = URL::signedRoute("api.verify-email", ['id' => 1, 'token' => $token], now()->addSeconds(20));
+        // URL::current();
+        return \response()->json(['url' => $url]);
+
+        $mail = new SendMail([
+            'title' => 'Vui lòng xác nhận địa chỉ email', 
+            'template' => 'sign-up', 
+            'data' => ['url' => $url]
+        ]);
+        // Mail::to($data['email'])->queue($mail);
+
+        return $this->createNewToken($token, 'Đăng ký thành công', 201);
     }
 
 
@@ -115,19 +132,22 @@ class AuthRepository implements AuthRepositoryInterface
     /**
      * Get the token array structure.
      *
-     * @param  string $token
+     * @param string $token
+     * @param string $message
+     * @param int $code 
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function createNewToken($token)
+    protected function createNewToken($token, string $message = '', int $code = 200)
     {
         return response()->json([
             'success' => true,
+            'message' => $message,
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => Auth::factory()->getTTL() * 60,
             'user' => auth()->user()
-        ]);
+        ], $code);
     }
 
     public function changePassword($data): JsonResponse

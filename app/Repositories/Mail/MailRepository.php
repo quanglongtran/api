@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Repositories\Mail;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -8,15 +8,13 @@ use App\Jobs\SendMail;
 use App\Models\MailTemplate;
 use Illuminate\Support\Facades\DB;
 
-class MailController extends Controller
-{
-    public function __construct()
+class MailRepository implements MailRepositoryInterface
+{   
+    // public static function sendEmail(Request $request)
+    public static function sendEmail(array $data = [])
     {
-        $this->middleware(['auth:api']);
-    }
-    
-    public function sendEmail(Request $request)
-    {
+        $request = new Request();
+        
         $validator = Validator::make($request->all(), [
             'mail_to' => 'required',
             'title' => 'required',
@@ -45,7 +43,7 @@ class MailController extends Controller
         ]);
     }
 
-    public function allTemplates()
+    public static function allTemplates()
     {
         $request = \request();
         
@@ -71,9 +69,9 @@ class MailController extends Controller
         ]);
     }
 
-    public function sync()
+    public static function sync()
     {
-        $data = $this->template();
+        $data = self::template();
         $result = [];
         
         MailTemplate::truncate();
@@ -94,7 +92,7 @@ class MailController extends Controller
         ]);
     }
 
-    public function template()
+    public static function template()
     {
         $items = [];
         if ($handle = opendir(resource_path('views/mail'))) {

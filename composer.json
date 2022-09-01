@@ -9,6 +9,7 @@
         "doctrine/dbal": "^3.4",
         "fedeisas/laravel-mail-css-inliner": "dev-master",
         "guzzlehttp/guzzle": "^7.4",
+        "intervention/image": "^2.7",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/socialite": "^5.5",

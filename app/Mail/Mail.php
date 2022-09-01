@@ -33,7 +33,7 @@ class Mail extends Mailable
     {
         return $this
         ->subject($this->data['title'])
-        ->from(\env('MAIL_USERNAME'), 'no reply')
+        // ->from(\env('MAIL_USERNAME'), 'no reply')
         ->view("mail.{$this->data['template']}", $this->data['data'])
         // ->render()
         ;

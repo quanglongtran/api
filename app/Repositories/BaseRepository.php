@@ -6,8 +6,6 @@ use App\Repositories\RepositoryInterface;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 
-// ================================================== VŨ VĂN LONG-MADE WITH ♥️ ===========================================
-
 abstract class BaseRepository implements RepositoryInterface
 {
     //model muốn tương tác

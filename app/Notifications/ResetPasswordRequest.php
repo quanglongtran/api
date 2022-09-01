@@ -19,6 +19,7 @@ class ResetPasswordRequest extends Notification implements ShouldQueue
     public function __construct($token)
     {
         $this->token = $token;
+        $this->queue = 'mail';
     }
     /**
      * Get the notification's delivery channels.

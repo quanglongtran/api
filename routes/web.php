@@ -1,6 +1,8 @@
 <?php
 
+use App\Exports\ExportFile;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\pdfController;
 use App\Mail\Mail as SendMail;
 use App\Models\User;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -8,9 +10,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Collection;
-use Illuminate\Support\LazyCollection;
+use App\Http\Controllers\ExportController as Export;
+use App\Http\Controllers\NotifyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,25 +41,15 @@ Route::get('/', function () {
 });
 
 Route::get('test', function (Request $request) {
-    $collection = collect([1, 2, 3, 4, 5]);
-
-    dd($collection->pop(), $collection->all());
+    return User::whereNotNull('device_token')->pluck('device_token')->all();
 })->name('test');
+
+Route::prefix('export')->name('export.')->group(function() {
+    Route::get('pdf', [Export::class, 'pdf']);
+    // Route::get('sheet', [Export::class, 'sheet'])->name('sheet');
+    Route::get('multi-sheet', [Export::class, 'multiSheet'])->name('multi-sheet');
+    Route::view('view', 'export.user', ['users' => User::all()]);
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <b>Result: </b>
-</body>
-
-</html>

@@ -17,6 +17,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Mail\MailRepositoryInterface::class,
             \App\Repositories\Mail\MailRepository::class,
         );
+
+        $this->app->singleton(
+            \App\Repositories\Notification\NotificationRepositoryInterface::class,
+            \App\Repositories\Notification\NotificationRepository::class,
+        );
     }
 
     /**

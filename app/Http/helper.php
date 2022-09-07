@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -104,4 +105,23 @@ function uploadImage(array $data, array $path_size)
 
 function slug($title = '', $seperator = '-') {
     return Str::slug($title);
+}
+
+/**
+ * Get real route
+ * 
+ * @param string $route
+ * @param string $attribute
+ * @return string
+ */
+function realRoute(string $route, string $attribute = ''): string {
+    if (!Route::has($route)) {
+        return 'disabled';
+    }
+
+    if (!$attribute) {
+        return route($route);
+    }
+
+    return "$attribute=" . route($route);
 }

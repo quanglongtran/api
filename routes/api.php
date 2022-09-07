@@ -4,6 +4,7 @@ use App\Http\Controllers\SocialController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Models\User;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -67,4 +68,9 @@ Route::prefix('email/verify')->group(function() {
     Route::get('{id}/{token}', function ($id, $token, AuthRepository $auth) {
         return $auth->verifyEmailCallback($id, $token);
     })->middleware(['signed'])->name('verify-email');
+});
+
+Route::prefix('notify')->name('notify.')->middleware('api')->group(function() {
+    Route::post('update', [NotifyController::class, 'update']);
+    Route::post('send', [NotifyController::class, 'send']);
 });
